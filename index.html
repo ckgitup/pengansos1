@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengantar Sosiologi X — Platform Pembelajaran Digital & Inkuiri Sosial Fase E</title>
+  <meta name="description" content="Halaman Utama Minimalis & Timeless Pengantar Sosiologi X Fase E (Kelas 10). Dilengkapi Mode Siswa dan Mode Guru (Sandi: cornelcktc).">
+  <!-- Tailwind CSS 3 -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <!-- Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <!-- Google Fonts: Plus Jakarta Sans & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+          },
+          colors: {
+            accent: {
+              DEFAULT: '#2563eb', // Strong Royal Cobalt Blue
+              hover: '#1d4ed8',
+              light: '#eff6ff',
+              border: '#bfdbfe',
+              text: '#1e40af'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #fafafa;
+      color: #0f172a;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    .display-font {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    /* Clean Minimalist Cards & Grid */
+    .minimal-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .minimal-card-hover:hover {
+      border-color: #2563eb;
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1), 0 8px 10px -6px rgba(37, 99, 235, 0.05);
+      transform: translateY(-2px);
+    }
+
+    /* Section View Switcher Animation */
+    .view-pane {
+      display: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .view-pane.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Custom Scrollbar Minimal */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-slate-900 flex flex-col justify-between selection:bg-blue-600 selection:text-white">
+
+  <!-- ==================== HEADER BAR ==================== -->
+  <header class="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/90 backdrop-blur-md">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
+      <!-- BRAND LOGO -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('hero-view')">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-white font-bold text-lg shadow-sm">
+          S
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="display-font text-base sm:text-lg font-bold tracking-tight text-slate-900">Pengantar Sosiologi <span class="text-blue-600">X</span></span>
+            <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-700 border border-slate-200">Fase E</span>
+          </div>
+          <p class="text-[11px] text-slate-500 font-medium">Platform Pembelajaran Digital Timeless</p>
+        </div>
+      </div>
+
+      <!-- MODE QUICK SELECTOR BUTTONS -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button type="button" onclick="openStudentFlow()" class="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-blue-700 transition-all">
+          <i data-lucide="user-check" class="h-4 w-4"></i>
+          <span>Mode Siswa</span>
+        </button>
+        
+        <button type="button" onclick="openTeacherAuthModal()" class="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs sm:text-sm font-bold text-slate-700 hover:border-slate-900 hover:text-slate-900 transition-all">
+          <i data-lucide="shield-lock" class="h-4 w-4 text-blue-600"></i>
+          <span>Mode Guru</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <main class="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 flex-1">
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- VIEW 1: HERO LANDING COVER PAGE (MINIMALIST CLEAN)                  -->
+    <!-- ------------------------------------------------------------------ -->
+    <section id="hero-view" class="view-pane active space-y-12">
+      <!-- HERO TITLE BANNER -->
+      <div class="relative overflow-hidden rounded-3xl minimal-card p-8 sm:p-14 text-center border-slate-200 shadow-sm">
+        <div class="max-w-3xl mx-auto space-y-6">
+          <div class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1 text-xs font-bold text-blue-700">
+            <i data-lucide="sparkles" class="h-3.5 w-3.5 text-blue-600"></i>
+            <span>Kurikulum Merdeka — Fase E (Kelas 10)</span>
+          </div>
+
+          <h1 class="display-font text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
+            PENGANTAR <span class="text-blue-600 underline decoration-blue-200 underline-offset-8">SOSIOLOGI X</span>
+          </h1>
+
+          <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            Platform pembelajaran digital mandiri & inkuiri sosial. Memahami hakikat sosiologi, sejarah pemikiran, tokoh dunia, hingga analisis fenomena masyarakat secara terstruktur.
+          </p>
+
+          <!-- MODE SELECTION ACTION CARDS -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 text-left">
+            <!-- SISWA SELECTION CARD -->
+            <div onclick="openStudentFlow()" class="minimal-card minimal-card-hover rounded-2xl p-6 cursor-pointer group">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                  <i data-lucide="graduation-cap" class="h-5 w-5"></i>
+                </div>
+                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-700 border border-slate-200">PORTAL SISWA</span>
+              </div>
+              <h3 class="display-font text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Mode Siswa</h3>
+              <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                Pendaftaran data siswa (Nama, Kelas, NISN), eksplorasi materi 6 sub-modul, kuis HOTS anti-cheat, dan sertifikat digital.
+              </p>
+              <div class="mt-5 flex items-center gap-2 text-xs font-bold text-blue-600 group-hover:translate-x-1 transition-transform">
+                <span>Mulai Pendaftaran & Pembelajaran</span>
+                <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </div>
+            </div>
+
+            <!-- GURU SELECTION CARD -->
+            <div onclick="openTeacherAuthModal()" class="minimal-card minimal-card-hover rounded-2xl p-6 cursor-pointer group">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-all">
+                  <i data-lucide="sliders" class="h-5 w-5"></i>
+                </div>
+                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-700 border border-slate-200">PORTAL GURU</span>
+              </div>
+              <h3 class="display-font text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Mode Guru</h3>
+              <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                Akses kata sandi (<code class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono">cornelcktc</code>), kontrol KKM & timer kuis, monitoring pengerjaan siswa, & integrasi GAS.
+              </p>
+              <div class="mt-5 flex items-center gap-2 text-xs font-bold text-slate-900 group-hover:text-blue-600 group-hover:translate-x-1 transition-transform">
+                <span>Buka Panel Kontrol & Organisasi Modul</span>
+                <i data-lucide="key" class="h-4 w-4"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURES SPECIFICATIONS GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="minimal-card rounded-2xl p-5">
+          <div class="flex items-center gap-2.5 text-blue-600 mb-2">
+            <i data-lucide="book-open" class="h-5 w-5"></i>
+            <h4 class="font-bold text-sm text-slate-900">6 Sub-Modul Pembelajaran</h4>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">Hakikat, sejarah, tokoh multiperspektif, fungsi, sosiologi Indonesia, & inkuiri sosial.</p>
+        </div>
+
+        <div class="minimal-card rounded-2xl p-5">
+          <div class="flex items-center gap-2.5 text-blue-600 mb-2">
+            <i data-lucide="brain-circuit" class="h-5 w-5"></i>
+            <h4 class="font-bold text-sm text-slate-900">Kuis HOTS & Timer</h4>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">Soal stimulus analisis kasus dengan timer countdown & batas ketuntasan minimal KKM.</p>
+        </div>
+
+        <div class="minimal-card rounded-2xl p-5">
+          <div class="flex items-center gap-2.5 text-blue-600 mb-2">
+            <i data-lucide="shield-check" class="h-5 w-5"></i>
+            <h4 class="font-bold text-sm text-slate-900">Proteksi Anti-Cheat</h4>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">Pencatatan otomatis peringatan saat siswa berpindah tab browser serta pembatasan penyalinan.</p>
+        </div>
+
+        <div class="minimal-card rounded-2xl p-5">
+          <div class="flex items-center gap-2.5 text-blue-600 mb-2">
+            <i data-lucide="database" class="h-5 w-5"></i>
+            <h4 class="font-bold text-sm text-slate-900">Google Apps Script</h4>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">Sinkronisasi otomatis ke Google Sheets untuk pencatatan nilai siswa secara real-time.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- VIEW 2: MODE SISWA — FORM PENDAFTARAN & INFORMASI MODUL            -->
+    <!-- ------------------------------------------------------------------ -->
+    <section id="student-view" class="view-pane space-y-8">
+      <!-- BREADCRUMB / BACK HEADER -->
+      <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="switchView('hero-view')" class="rounded-xl border border-slate-200 bg-white p-2 text-slate-600 hover:text-slate-900 hover:border-slate-300 transition">
+            <i data-lucide="arrow-left" class="h-5 w-5"></i>
+          </button>
+          <div>
+            <h2 class="display-font text-xl font-bold text-slate-900">Portal Mode Siswa</h2>
+            <p class="text-xs text-slate-500">Pendaftaran Data Sesi Pembelajaran Sosiologi X</p>
+          </div>
+        </div>
+        <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700 border border-blue-200">Langkah 1 dari 2</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- FORM PENDAFTARAN SISWA (COL 5) -->
+        <div class="lg:col-span-5">
+          <div class="minimal-card rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+            <div class="flex items-center gap-3 border-b border-slate-100 pb-4">
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
+                <i data-lucide="user-plus" class="h-5 w-5"></i>
+              </div>
+              <div>
+                <h3 class="display-font text-lg font-bold text-slate-900">Form Pendaftaran Siswa</h3>
+                <p class="text-xs text-slate-500">Isi data identitas diri secara akurat</p>
+              </div>
+            </div>
+
+            <form id="student-reg-form" class="space-y-4" onsubmit="handleStudentRegistration(event)">
+              <!-- INPUT NAMA LENGKAP -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Lengkap Siswa <span class="text-rose-500">*</span></label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <i data-lucide="user" class="h-4 w-4"></i>
+                  </div>
+                  <input type="text" id="reg-nama" required placeholder="Contoh: Ahmad Fauzi" class="w-full rounded-xl border border-slate-300 bg-white pl-10 pr-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100 transition">
+                </div>
+              </div>
+
+              <!-- INPUT KELAS & NISN GRID -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Kelas <span class="text-rose-500">*</span></label>
+                  <div class="relative">
+                    <select id="reg-kelas" required class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100 transition">
+                      <option value="X-1">X-1</option>
+                      <option value="X-2">X-2</option>
+                      <option value="X-3">X-3</option>
+                      <option value="X-4">X-4</option>
+                      <option value="X-5">X-5</option>
+                      <option value="X-6">X-6</option>
+                      <option value="X-7">X-7</option>
+                      <option value="X-8">X-8</option>
+                      <option value="X-9">X-9</option>
+                      <option value="X-10">X-10</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">NISN (10 Digit) <span class="text-rose-500">*</span></label>
+                  <div class="relative">
+                    <input type="text" id="reg-nisn" required pattern="[0-9]{5,12}" placeholder="0078912345" class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100 transition">
+                  </div>
+                </div>
+              </div>
+
+              <!-- TOKEN AKSES KELAS -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Token Akses Kelas</label>
+                <input type="text" id="reg-token" value="SOSIO10" class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-blue-700 focus:border-blue-600 focus:outline-none">
+                <p class="text-[10px] text-slate-500 mt-1">*Default token kelas: SOSIO10</p>
+              </div>
+
+              <div id="reg-error-msg" class="hidden rounded-xl bg-rose-50 border border-rose-200 p-3 text-center text-xs font-semibold text-rose-700"></div>
+
+              <button type="submit" class="w-full flex items-center justify-center gap-2 rounded-xl bg-blue-600 py-3 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-blue-700 transition-all">
+                <span>Simpan Pendaftaran & Lihat Keterangan Modul</span>
+                <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- INFORMASI MODUL & ATURAN LOGIKA (COL 7) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div id="module-overview-card" class="minimal-card rounded-3xl p-6 sm:p-8 space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700 border border-blue-200">MODUL & ATURAN PENGERJAAN</span>
+              <h3 class="display-font text-xl font-bold text-slate-900 mt-2">Struktur Modul & Aturan Pembelajaran</h3>
+              <p class="text-xs text-slate-500 mt-1">Pahami alur pembelajaran dan logika sistem KKM sebelum memulai.</p>
+            </div>
+
+            <!-- RINGKASAN SUB-MODUL 1A - 1F GRID -->
+            <div>
+              <h4 class="text-xs font-bold text-blue-700 tracking-wider uppercase mb-3 flex items-center gap-1.5">
+                <i data-lucide="layers" class="h-4 w-4"></i>
+                Daftar 6 Sub-Modul Pembelajaran:
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center gap-2.5">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-white text-[11px]">1A</span>
+                  <span class="font-semibold text-slate-800">Hakikat & Cara Berpikir Sosiologis</span>
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center gap-2.5">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-white text-[11px]">1B</span>
+                  <span class="font-semibold text-slate-800">Sejarah Kelahiran Sosiologi</span>
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center gap-2.5">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-white text-[11px]">1C</span>
+                  <span class="font-semibold text-slate-800">Tokoh Utama & Multiperspektif</span>
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center gap-2.5">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-white text-[11px]">1D</span>
+                  <span class="font-semibold text-slate-800">Fungsi & Relevansi Sosiologi</span>
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center gap-2.5">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-white text-[11px]">1E</span>
+                  <span class="font-semibold text-slate-800">Sosiologi Indonesia & Isu Lokal</span>
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center gap-2.5">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-white text-[11px]">1F</span>
+                  <span class="font-semibold text-slate-800">Praktik Inkuiri & Penelitian Sosial</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- LOGIKA & ATURAN PENGERJAAN -->
+            <div class="rounded-2xl border border-blue-200 bg-blue-50/50 p-4 space-y-3">
+              <h4 class="text-xs font-bold text-blue-900 tracking-wider uppercase flex items-center gap-1.5">
+                <i data-lucide="shield-alert" class="h-4 w-4 text-blue-600"></i>
+                Logika & Aturan Sistem:
+              </h4>
+              <ul class="space-y-2 text-xs text-slate-700">
+                <li class="flex items-start gap-2">
+                  <i data-lucide="check-circle-2" class="h-4 w-4 text-blue-600 shrink-0 mt-0.5"></i>
+                  <span><strong>Ketuntasan Minimal (KKM):</strong> Wajib mencapai minimal skor <strong>80%</strong> pada kuis sub-modul untuk membuka sub-modul berikutnya.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i data-lucide="clock" class="h-4 w-4 text-blue-600 shrink-0 mt-0.5"></i>
+                  <span><strong>Timer Kuis 20 Menit:</strong> Setiap kuis dibatasi waktu otomatis 20 menit per sub-modul.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i data-lucide="eye-off" class="h-4 w-4 text-blue-600 shrink-0 mt-0.5"></i>
+                  <span><strong>Proteksi Anti-Cheat:</strong> Pindah tab browser saat kuis berlangsung akan terekam oleh sistem monitoring guru.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i data-lucide="award" class="h-4 w-4 text-blue-600 shrink-0 mt-0.5"></i>
+                  <span><strong>Sertifikat Kelulusan:</strong> Menyelesaikan 6 sub-modul dengan predikat lulus akan membuka Sertifikat Digital resmi.</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- ACTION ENTER MODULE BUTTON -->
+            <div class="pt-2">
+              <button id="btn-enter-module" disabled onclick="launchMainModule()" class="w-full flex items-center justify-center gap-2 rounded-2xl bg-slate-100 py-3.5 text-xs sm:text-sm font-bold text-slate-400 cursor-not-allowed transition-all">
+                <i data-lucide="play" class="h-4 w-4"></i>
+                <span>Selesaikan Pendaftaran Dahulu Untuk Masuk Modul</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------ -->
+    <!-- VIEW 3: MODE GURU — DASHBOARD MONITORING & PENGATURAN MODUL       -->
+    <!-- ------------------------------------------------------------------ -->
+    <section id="teacher-view" class="view-pane space-y-8">
+      <!-- TEACHER HEADER BAR -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="switchView('hero-view')" class="rounded-xl border border-slate-200 bg-white p-2 text-slate-600 hover:text-slate-900 transition">
+            <i data-lucide="arrow-left" class="h-5 w-5"></i>
+          </button>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="display-font text-xl font-bold text-slate-900">Portal Mode Guru Master</h2>
+              <span class="rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold text-blue-700 border border-blue-200">TERVERIFIKASI</span>
+            </div>
+            <p class="text-xs text-slate-500">Pengaturan Remote Control, Monitoring Real-time & Organisasi Modul</p>
+          </div>
+        </div>
+
+        <button type="button" onclick="launchMainModuleAsTeacher()" class="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-blue-600 transition-all">
+          <i data-lucide="external-link" class="h-4 w-4"></i>
+          <span>Buka Modul Utama Sebagai Guru</span>
+        </button>
+      </div>
+
+      <!-- TEACHER NAVIGATION TABS -->
+      <div class="flex overflow-x-auto border-b border-slate-200 gap-2 pb-1 scrollbar-none">
+        <button type="button" id="tab-btn-monitoring" onclick="switchTeacherTab('monitoring')" class="flex items-center gap-2 border-b-2 border-blue-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-blue-600">
+          <i data-lucide="activity" class="h-4 w-4"></i>
+          <span>1. Monitoring & Rekap Nilai Siswa</span>
+        </button>
+        <button type="button" id="tab-btn-remote" onclick="switchTeacherTab('remote')" class="flex items-center gap-2 border-b-2 border-transparent px-4 py-2.5 text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-900">
+          <i data-lucide="sliders" class="h-4 w-4"></i>
+          <span>2. Remote Control KKM & Timer</span>
+        </button>
+        <button type="button" id="tab-btn-modules" onclick="switchTeacherTab('modules')" class="flex items-center gap-2 border-b-2 border-transparent px-4 py-2.5 text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-900">
+          <i data-lucide="folder-tree" class="h-4 w-4"></i>
+          <span>3. Organisasi Modul & Soal</span>
+        </button>
+        <button type="button" id="tab-btn-gas" onclick="switchTeacherTab('gas')" class="flex items-center gap-2 border-b-2 border-transparent px-4 py-2.5 text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-900">
+          <i data-lucide="cloud-cog" class="h-4 w-4"></i>
+          <span>4. Integrasi GAS Backend</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: MONITORING PANEL -->
+      <div id="teacher-pane-monitoring" class="space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="minimal-card rounded-2xl p-5 text-center">
+            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Pengerjaan Siswa</p>
+            <p id="t-stat-total" class="display-font text-3xl font-extrabold text-blue-600 mt-1">0</p>
+          </div>
+          <div class="minimal-card rounded-2xl p-5 text-center">
+            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Rata-Rata Persentase Nilai</p>
+            <p id="t-stat-avg" class="display-font text-3xl font-extrabold text-emerald-600 mt-1">0%</p>
+          </div>
+          <div class="minimal-card rounded-2xl p-5 text-center">
+            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Alert Pindah Tab Browser</p>
+            <p id="t-stat-alerts" class="display-font text-3xl font-extrabold text-rose-600 mt-1">0x</p>
+          </div>
+        </div>
+
+        <div class="minimal-card rounded-3xl overflow-hidden">
+          <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
+            <h3 class="display-font text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="table" class="h-4 w-4 text-blue-600"></i>
+              Log Rekapitulasi Hasil Pengerjaan Siswa
+            </h3>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="exportMonitoringCSV()" class="flex items-center gap-1.5 rounded-xl bg-blue-50 border border-blue-200 px-3 py-1.5 text-xs font-bold text-blue-700 hover:bg-blue-600 hover:text-white transition">
+                <i data-lucide="download" class="h-3.5 w-3.5"></i>
+                <span>Ekspor CSV</span>
+              </button>
+              <button type="button" onclick="clearMonitoringLog()" class="rounded-xl border border-rose-200 px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50 transition">
+                Reset Log
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-100 text-slate-600 uppercase font-bold text-[10px]">
+                <tr>
+                  <th class="p-3">Waktu</th>
+                  <th class="p-3">Nama Siswa</th>
+                  <th class="p-3">Kelas</th>
+                  <th class="p-3">NISN / Email</th>
+                  <th class="p-3">Modul</th>
+                  <th class="p-3">Skor (%)</th>
+                  <th class="p-3">Status KKM</th>
+                  <th class="p-3">Alert Tab</th>
+                </tr>
+              </thead>
+              <tbody id="t-monitoring-tbody" class="divide-y divide-slate-200 text-slate-700">
+                <tr>
+                  <td colspan="8" class="p-6 text-center text-slate-400 italic">Belum ada pengerjaan kuis siswa yang terekam.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: REMOTE CONTROL PANEL -->
+      <div id="teacher-pane-remote" class="hidden space-y-6">
+        <div class="minimal-card rounded-3xl p-6 sm:p-8 max-w-2xl space-y-6">
+          <div class="border-b border-slate-100 pb-4">
+            <h3 class="display-font text-lg font-bold text-slate-900">Pengaturan Remote Control Kelas</h3>
+            <p class="text-xs text-slate-500">Atur standar ketuntasan, timer, dan token akses kelas</p>
+          </div>
+
+          <form id="t-remote-form" onsubmit="saveTeacherSettings(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Batas KKM (%)</label>
+                <input type="number" id="t-set-kkm" value="80" min="50" max="100" class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-blue-700 focus:outline-none focus:border-blue-600">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Timer Kuis (Menit)</label>
+                <input type="number" id="t-set-timer" value="20" min="1" max="120" class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-blue-700 focus:outline-none focus:border-blue-600">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Token Akses</label>
+                <input type="text" id="t-set-token" value="SOSIO10" class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold uppercase text-blue-700 focus:outline-none focus:border-blue-600">
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <label class="flex items-center gap-3 text-xs font-bold text-slate-800 cursor-pointer">
+                <input type="checkbox" id="t-set-unlockall" class="h-4 w-4 rounded accent-blue-600">
+                <span>Mode Demonstrasi Guru: Buka Akses Semua 6 Sub-Modul Sekaligus</span>
+              </label>
+            </div>
+
+            <div id="t-save-msg" class="hidden rounded-xl p-3 text-xs font-bold text-center"></div>
+
+            <button type="submit" class="w-full flex items-center justify-center gap-2 rounded-xl bg-blue-600 py-3 text-xs font-bold text-white hover:bg-blue-700 transition">
+              <i data-lucide="save" class="h-4 w-4"></i>
+              <span>Simpan Pengaturan Kontrol</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- TAB 3: ORGANISASI MODUL & SOAL -->
+      <div id="teacher-pane-modules" class="hidden space-y-6">
+        <div class="minimal-card rounded-3xl p-6 sm:p-8 space-y-6">
+          <div class="border-b border-slate-100 pb-4">
+            <h3 class="display-font text-lg font-bold text-slate-900">Organisasi Sub-Modul & Struktur Kuis HOTS</h3>
+            <p class="text-xs text-slate-500">Kelola 6 unit pembelajaran Pengantar Sosiologi X</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="module-org-grid">
+            <!-- Dynamic Grid filled via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: GAS BACKEND -->
+      <div id="teacher-pane-gas" class="hidden space-y-6">
+        <div class="minimal-card rounded-3xl p-6 sm:p-8 max-w-3xl space-y-6">
+          <div class="border-b border-slate-100 pb-4">
+            <h3 class="display-font text-lg font-bold text-slate-900">Integrasi Google Apps Script (GAS) Micro-Backend</h3>
+            <p class="text-xs text-slate-500">Sinkronisasi otomatis hasil pengerjaan kuis siswa ke Google Sheets Anda</p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">URL Web App Google Apps Script</label>
+              <input type="url" id="t-set-gasurl" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600">
+              <p class="text-[10px] text-slate-500 mt-1">*Kosongkan jika berjalan penuh dalam mode offline lokal.</p>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 space-y-2 text-xs text-slate-700">
+              <p class="font-bold text-blue-700">Petunjuk Deployment Google Apps Script:</p>
+              <ol class="list-decimal list-inside space-y-1 text-slate-600">
+                <li>Buka Google Sheets baru & pilih <strong>Extensions &gt; Apps Script</strong>.</li>
+                <li>Salin kode dari file <code class="text-blue-700 font-mono">Code.gs</code> di direktori proyek ini.</li>
+                <li>Klik <strong>Deploy &gt; New deployment &gt; Web app</strong>.</li>
+                <li>Setel <em>Who has access</em> ke <strong>Anyone</strong> (Siapa Saja).</li>
+                <li>Tempelkan URL Web App yang dihasilkan ke dalam kolom di atas.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== TEACHER PASSWORD MODAL ==================== -->
+  <div id="teacher-pwd-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
+    <div class="w-full max-w-md rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 space-y-6 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm">
+            <i data-lucide="key-round" class="h-5 w-5"></i>
+          </div>
+          <div>
+            <h3 class="display-font text-base sm:text-lg font-bold text-slate-900">Otentikasi Mode Guru</h3>
+            <p class="text-xs text-slate-500">Masukkan kata sandi master guru</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeTeacherAuthModal()" class="rounded-lg p-1.5 text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="verifyTeacherPassword(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Kata Sandi Master Guru</label>
+          <div class="relative">
+            <input type="password" id="t-pwd-input" required placeholder="Masukkan kata sandi..." class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100">
+            <button type="button" onclick="togglePasswordVisibility('t-pwd-input')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-700">
+              <i data-lucide="eye" class="h-4 w-4"></i>
+            </button>
+          </div>
+          <p class="text-[10px] text-blue-700 font-semibold mt-1">*Sandi bawaan sesuai instruksi: <code class="font-mono">cornelcktc</code></p>
+        </div>
+
+        <div id="t-pwd-error" class="hidden rounded-xl bg-rose-50 border border-rose-200 p-2.5 text-center text-xs font-bold text-rose-700"></div>
+
+        <button type="submit" class="w-full flex items-center justify-center gap-2 rounded-xl bg-slate-900 py-3 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-blue-600 transition">
+          <span>Verifikasi & Buka Panel Guru</span>
+          <i data-lucide="shield-check" class="h-4 w-4"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
+    <div class="mx-auto max-w-6xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-700">Pengantar Sosiologi X</span>
+        <span>&bull;</span>
+        <span>Fase E / Kelas 10</span>
+      </div>
+      <p>&copy; 2026 sosiologi.eu.org &mdash; Minimalist & Timeless E-Learning Platform</p>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // State Variables
+    let currentStudent = null;
+
+    // Sub-Module Data Overview (Future-Proof Architecture)
+    const SUB_MODULES = [
+      { id: "1A", title: "Hakikat & Cara Berpikir", desc: "Objek kajian sosiologi, fenomena sosial, & daya kritis." },
+      { id: "1B", title: "Sejarah Kelahiran", desc: "Revolusi Industri, Revolusi Prancis, & Auguste Comte." },
+      { id: "1C", title: "Tokoh & Multiperspektif", desc: "Emile Durkheim, Karl Marx, Max Weber, & C. Wright Mills." },
+      { id: "1D", title: "Fungsi & Relevansi", desc: "Fungsi pembangunan, perencanaan sosial, & pemecahan masalah." },
+      { id: "1E", title: "Sosiologi Indonesia", desc: "Pemikiran Ki Hajar Dewantara, Soerjono Soekanto, & kearifan lokal." },
+      { id: "1F", title: "Praktik Inkuiri", desc: "Metode kuantitatif, kualitatif, & analisis data sosial." }
+    ];
+
+    // Navigation View Switcher
+    function switchView(viewId) {
+      document.querySelectorAll('.view-pane').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(viewId);
+      if (target) {
+        target.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    // Open Student Flow
+    function openStudentFlow() {
+      switchView('student-view');
+      const saved = localStorage.getItem('activeStudent');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.nama) document.getElementById('reg-nama').value = parsed.nama;
+          if (parsed.kelas) document.getElementById('reg-kelas').value = parsed.kelas;
+          if (parsed.nisn) document.getElementById('reg-nisn').value = parsed.nisn;
+          enableEnterModuleButton();
+        } catch(e) {}
+      }
+    }
+
+    // Handle Student Registration
+    function handleStudentRegistration(e) {
+      e.preventDefault();
+      const nama = document.getElementById('reg-nama').value.trim();
+      const kelas = document.getElementById('reg-kelas').value;
+      const nisn = document.getElementById('reg-nisn').value.trim();
+      const token = document.getElementById('reg-token').value.trim();
+      const errEl = document.getElementById('reg-error-msg');
+
+      if (!nama || !kelas || !nisn) {
+        if (errEl) {
+          errEl.textContent = "Mohon lengkapi seluruh kolom formulir!";
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      currentStudent = {
+        nama: nama,
+        kelas: kelas,
+        nisn: nisn,
+        email: nisn + "@sekolah.sch.id",
+        token: token || "SOSIO10"
+      };
+
+      // Save to localStorage for app.js integration
+      localStorage.setItem('activeStudent', JSON.stringify(currentStudent));
+
+      if (errEl) errEl.classList.add('hidden');
+      enableEnterModuleButton();
+      
+      alert(`✅ Pendaftaran Berhasil!\n\nNama: ${nama}\nKelas: ${kelas}\nNISN: ${nisn}\n\nSilakan baca keterangan aturan di samping lalu klik "Masuk ke Ruang Pembelajaran Modul".`);
+    }
+
+    function enableEnterModuleButton() {
+      const btn = document.getElementById('btn-enter-module');
+      if (btn) {
+        btn.disabled = false;
+        btn.className = "w-full flex items-center justify-center gap-2 rounded-2xl bg-blue-600 py-3.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-blue-700 transition-all cursor-pointer";
+        btn.innerHTML = `<i data-lucide="rocket" class="h-4 w-4"></i><span>🚀 Masuk Ke Ruang Pembelajaran Modul</span>`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+    }
+
+    // Launch Main Module (modul pengantar.html)
+    function launchMainModule() {
+      window.location.href = "modul pengantar.html";
+    }
+
+    // Launch Main Module as Teacher
+    function launchMainModuleAsTeacher() {
+      localStorage.setItem('unlockedModules', JSON.stringify(["1A", "1B", "1C", "1D", "1E", "1F"]));
+      window.location.href = "modul pengantar.html";
+    }
+
+    // Teacher Modal Controls
+    function openTeacherAuthModal() {
+      const modal = document.getElementById('teacher-pwd-modal');
+      const err = document.getElementById('t-pwd-error');
+      const input = document.getElementById('t-pwd-input');
+      if (err) err.classList.add('hidden');
+      if (input) input.value = '';
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeTeacherAuthModal() {
+      const modal = document.getElementById('teacher-pwd-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function togglePasswordVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    }
+
+    // Verify Password Master Guru ('cornelcktc')
+    function verifyTeacherPassword(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('t-pwd-input').value.trim();
+      const err = document.getElementById('t-pwd-error');
+
+      if (pwd === "cornelcktc" || pwd === "SOSIO10") {
+        closeTeacherAuthModal();
+        switchView('teacher-view');
+        renderTeacherMonitoringData();
+        renderModuleOrgGrid();
+      } else {
+        if (err) {
+          err.textContent = "Kata sandi guru salah! Gunakan kata sandi: cornelcktc";
+          err.classList.remove('hidden');
+        }
+      }
+    }
+
+    // Switch Teacher Panel Tabs
+    function switchTeacherTab(tabName) {
+      ['monitoring', 'remote', 'modules', 'gas'].forEach(name => {
+        const btn = document.getElementById(`tab-btn-${name}`);
+        const pane = document.getElementById(`teacher-pane-${name}`);
+        if (btn && pane) {
+          if (name === tabName) {
+            btn.className = "flex items-center gap-2 border-b-2 border-blue-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-blue-600";
+            pane.classList.remove('hidden');
+          } else {
+            btn.className = "flex items-center gap-2 border-b-2 border-transparent px-4 py-2.5 text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-900";
+            pane.classList.add('hidden');
+          }
+        }
+      });
+    }
+
+    // Render Teacher Monitoring Dashboard
+    function renderTeacherMonitoringData() {
+      let logs = [];
+      try {
+        logs = JSON.parse(localStorage.getItem('sosio_monitoring_logs') || '[]');
+      } catch(e) {}
+
+      document.getElementById('t-stat-total').textContent = logs.length;
+      if (logs.length > 0) {
+        const avg = Math.round(logs.reduce((acc, item) => acc + item.pct, 0) / logs.length);
+        document.getElementById('t-stat-avg').textContent = `${avg}%`;
+      } else {
+        document.getElementById('t-stat-avg').textContent = '0%';
+      }
+
+      const totalAlerts = logs.reduce((acc, item) => acc + (item.tabSwitchCount || 0), 0);
+      document.getElementById('t-stat-alerts').textContent = `${totalAlerts}x`;
+
+      const tbody = document.getElementById('t-monitoring-tbody');
+      if (tbody) {
+        if (logs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400 italic">Belum ada pengerjaan kuis siswa yang terekam.</td></tr>`;
+        } else {
+          tbody.innerHTML = logs.map(item => `
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 text-slate-500 whitespace-nowrap">${item.timestamp}</td>
+              <td class="p-3 font-bold text-slate-900">${escapeHtml(item.nama)}</td>
+              <td class="p-3 text-slate-700">${escapeHtml(item.kelas)}</td>
+              <td class="p-3 text-slate-500">${escapeHtml(item.email)}</td>
+              <td class="p-3 font-bold text-blue-600">Sub-Modul ${item.subModule}</td>
+              <td class="p-3 font-bold ${item.pct >= 80 ? 'text-emerald-600' : 'text-rose-600'}">${item.score}/${item.total} (${item.pct}%)</td>
+              <td class="p-3">
+                ${item.isPassed 
+                  ? '<span class="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200">LULUS</span>' 
+                  : '<span class="rounded-full bg-rose-50 px-2.5 py-0.5 text-[10px] font-bold text-rose-700 border border-rose-200">REMIDIAL</span>'}
+              </td>
+              <td class="p-3">
+                ${item.tabSwitchCount > 0 
+                  ? `<span class="rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-bold text-rose-700 border border-rose-200">⚠️ ${item.tabSwitchCount}x Pindah</span>` 
+                  : '<span class="text-slate-400 text-[10px]">Bersih</span>'}
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+    }
+
+    // Export Monitoring to CSV
+    function exportMonitoringCSV() {
+      let logs = [];
+      try { logs = JSON.parse(localStorage.getItem('sosio_monitoring_logs') || '[]'); } catch(e) {}
+      if (logs.length === 0) {
+        alert("Belum ada data pengerjaan siswa untuk diekspor.");
+        return;
+      }
+      let csv = "data:text/csv;charset=utf-8,Waktu,Nama Siswa,Kelas,Email,SubModul,Skor,Total,Persentase,Status,AlertTabSwitch\n";
+      logs.forEach(row => {
+        csv += `"${row.timestamp}","${row.nama}","${row.kelas}","${row.email}","${row.subModule}",${row.score},${row.total},${row.pct},"${row.isPassed ? 'LULUS' : 'REMIDIAL'}",${row.tabSwitchCount || 0}\n`;
+      });
+      const encoded = encodeURI(csv);
+      const link = document.createElement("a");
+      link.href = encoded;
+      link.download = `Rekap_Pengerjaan_Sosiologi_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Clear Monitoring Log
+    function clearMonitoringLog() {
+      if (confirm("Apakah Anda yakin ingin membersihkan seluruh log monitoring pengerjaan siswa?")) {
+        localStorage.removeItem('sosio_monitoring_logs');
+        renderTeacherMonitoringData();
+      }
+    }
+
+    // Save Remote Control Settings
+    function saveTeacherSettings(e) {
+      e.preventDefault();
+      const kkm = parseInt(document.getElementById('t-set-kkm').value || "80", 10);
+      const timer = parseInt(document.getElementById('t-set-timer').value || "20", 10);
+      const unlockAll = document.getElementById('t-set-unlockall').checked;
+      const msg = document.getElementById('t-save-msg');
+
+      if (unlockAll) {
+        localStorage.setItem('unlockedModules', JSON.stringify(["1A", "1B", "1C", "1D", "1E", "1F"]));
+      }
+
+      if (msg) {
+        msg.textContent = `✅ Pengaturan Disimpan! KKM: ${kkm}%, Timer: ${timer} Menit.`;
+        msg.className = "rounded-xl bg-blue-50 border border-blue-200 p-3 text-xs font-bold text-blue-700 text-center";
+        msg.classList.remove('hidden');
+      }
+    }
+
+    // Render Sub-Module Organization Cards Grid
+    function renderModuleOrgGrid() {
+      const container = document.getElementById('module-org-grid');
+      if (!container) return;
+      container.innerHTML = SUB_MODULES.map(mod => `
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="rounded-lg bg-blue-600 px-2.5 py-1 text-xs font-extrabold text-white">Sub-Modul ${mod.id}</span>
+            <span class="text-[10px] text-slate-500 font-bold">15 Soal HOTS</span>
+          </div>
+          <h4 class="font-bold text-sm text-slate-900">${mod.title}</h4>
+          <p class="text-xs text-slate-500 leading-relaxed">${mod.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    // HTML Escape Helper
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // On DOM Loaded Init
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

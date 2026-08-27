@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Sosiologi — E-Module Platform (Fase E)</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#17211d;--pine:#174d3a;--moss:#2d7354;--lime:#d8ee93;--paper:#f6f3e9;--cream:#fffdf7;--orange:#ee824b;--line:#d8d3c4;--danger:#a53e24}
+    *{box-sizing:border-box}
+    body{font-family:"DM Sans",sans-serif;color:var(--ink);overflow-x:hidden}
+    .display-font{font-family:"Fraunces",serif}
+    .app-shell{width:100%;min-height:calc(100 * min(var(--vh,1vh),1vh))}
+    .grid-paper{background-color:var(--paper);background-image:linear-gradient(rgba(23,77,58,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(23,77,58,.05) 1px,transparent 1px);background-size:25px 25px}
+    .hero-overlay{background:linear-gradient(90deg,rgba(14,45,33,.97),rgba(14,45,33,.79),rgba(14,45,33,.25))}
+    .page-view{display:none;animation:reveal .35s ease both}
+    .page-view.active{display:block}
+    .nav-tab{transition:.2s ease}
+    .nav-tab.active{background:var(--pine);color:var(--lime)}
+    .nav-tab:hover{transform:translateY(-1px)}
+
+    /* SUB-TAB STYLING WITH LOCKED STATE */
+    .sub-tab{background:#fffdf7;color:#174d3a;border:1px solid #d8d3c4;white-space:nowrap;cursor:pointer;transition:all .2s ease;display:inline-flex;align-items:center;gap:6px}
+    .sub-tab.active{background:#174d3a;color:#d8ee93;border-color:#174d3a;box-shadow:0 4px 12px rgba(23,77,58,0.25)}
+    .sub-tab:hover:not(.active):not(.locked){background:#e8efd9;color:#174d3a}
+    .sub-tab.locked{background:#eae6da;color:#8c877a;border-color:#c8c3b4;cursor:not-allowed;opacity:0.75}
+
+    .focus-ring:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+    .lesson-card,.challenge-card{border:1px solid var(--line);background:var(--cream);box-shadow:0 5px 16px rgba(23,33,29,.05)}
+    .lesson-card p,.lesson-card li{color:#405047;line-height:1.74}
+    
+    /* ANTI-CHEAT & PROTECTED QUIZ CONTAINER */
+    .unselectable{user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}
+    
+    .quiz-option{transition:.18s ease}
+    .quiz-option:hover:not(:disabled){transform:translateX(3px);border-color:var(--moss)}
+    .quiz-option.selected{border-color:var(--orange);background:#fff1e9}
+    .quiz-option.correct{border-color:#4f8b5c;background:#dff3cf;color:#174d3a}
+    .quiz-option.wrong{border-color:#d16b48;background:#fae1d9;color:#8d3920}
+    .quiz-option:disabled{cursor:default}
+    
+    /* STEPPER BUTTONS */
+    .q-nav-btn{width:36px;height:36px;border-radius:10px;font-size:13px;font-weight:700;border:1px solid var(--line);background:#fffdf7;color:var(--pine);transition:all .15s ease;display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+    .q-nav-btn:hover{background:#e8efd9}
+    .q-nav-btn.active{background-color:#d8ee93 !important;color:#174d3a !important;border-color:#d8ee93 !important;box-shadow:0 3px 10px rgba(0,0,0,0.35);transform:scale(1.12);font-weight:800}
+    .q-nav-btn.answered:not(.active){background-color:#dff3cf;color:#174d3a;border-color:#a8dc9f}
+
+    /* PULSING TIMER EFFECT */
+    .timer-warning{animation:pulse 1s infinite alternate;color:#a53e24 !important;border-color:#a53e24 !important;background-color:#fae1d9 !important}
+    @keyframes pulse{from{opacity:1;transform:scale(1)}to{opacity:0.8;transform:scale(1.03)}}
+
+    .progress-fill{transition:width .25s ease}
+    .scrollbar-none::-webkit-scrollbar{display:none}
+    .scrollbar-none{-ms-overflow-style:none;scrollbar-width:none}
+    @keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .hidden{display:none!important}
+
+    /* MEDIA PRINT PURE CERTIFICATE ONLY */
+    @media print {
+      body {
+        background: #ffffff !important;
+        background-image: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .app-shell, header, nav, main, footer, #student-auth-modal, #teacher-admin-modal, .sub-tab, #submodule-nav-bar {
+        display: none !important;
+      }
+      #certificate-modal {
+        position: static !important;
+        inset: auto !important;
+        display: block !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      #certificate-modal > div {
+        max-width: 100% !important;
+        width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+      }
+      .print\:hidden {
+        display: none !important;
+      }
+      @page {
+        size: landscape;
+        margin: 8mm;
+      }
+    }
+  </style>
+ </head>
+ <body data-template-id="__page-root" class="grid-paper">
+  <div class="app-shell w-full overflow-x-hidden">
+   <!-- HEADER BAR -->
+   <header data-template-id="site-header" class="canva-header sticky top-0 z-20 w-full border-b border-[#d8d3c4] bg-[#f6f3e9]/95 backdrop-blur">
+    <nav class="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 md:px-8 md:py-3" aria-label="Navigasi utama">
+     <div class="flex items-center gap-2.5 md:gap-3 cursor-pointer" id="header-brand-trigger" title="Klik 5x untuk Portal Guru">
+      <svg class="h-9 w-9 md:h-10 md:w-10 shrink-0 shadow-sm rounded-xl" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+       <rect width="100" height="100" rx="24" fill="#0f203c"/>
+       <path d="M 75 25 C 20 25, 20 50, 50 50 C 80 50, 80 75, 25 75" stroke="#4a86e8" stroke-width="11" stroke-linecap="round"/>
+       <circle cx="75" cy="25" r="10" fill="#ee824b"/>
+       <circle cx="36" cy="31" r="5" fill="#a6c8ff"/>
+       <circle cx="64" cy="69" r="5" fill="#a6c8ff"/>
+       <circle cx="25" cy="75" r="10" fill="#ee824b"/>
+      </svg>
+      <div>
+       <p data-template-id="nav-kicker" class="canva-text text-[10px] md:text-xs font-bold tracking-[.14em] text-[#ee824b]"></p>
+       <p data-template-id="nav-brand" class="canva-text text-xs md:text-sm font-bold text-[#174d3a] leading-tight"></p>
+      </div>
+     </div>
+
+     <!-- USER PROFILE BADGE & TAB SWITCHER -->
+     <div class="flex items-center gap-2 md:gap-3">
+      <!-- HOME LANDING PAGE BUTTON -->
+      <a href="index.html" class="flex items-center gap-1.5 rounded-full border border-[#174d3a]/30 bg-[#fffdf7] px-3 py-1.5 text-xs font-bold text-[#174d3a] hover:bg-[#e8efd9] transition shadow-sm" title="Kembali ke Halaman Muka Cover">
+       <i data-lucide="home" class="h-3.5 w-3.5 text-[#ee824b]"></i>
+       <span class="hidden sm:inline">Halaman Muka</span>
+      </a>
+
+      <!-- PORTAL SISWA BADGE -->
+      <div id="student-session-badge" class="hidden rounded-full border border-[#174d3a]/20 bg-[#174d3a]/10 px-3 py-1 text-xs font-bold text-[#174d3a] flex items-center gap-1.5" title="Sesi Portal Siswa Aktif">
+       <span class="rounded-full bg-[#174d3a] px-1.5 py-0.5 text-[9px] font-extrabold text-[#d8ee93] uppercase">SISWA</span>
+       <span id="active-student-name">Siswa</span>
+       <button type="button" id="relogin-btn" title="Ganti Sesi Siswa" class="ml-1 text-[10px] text-[#a53e24] underline hover:text-[#ee824b]">Ubah</button>
+      </div>
+
+      <!-- PORTAL GURU BUTTON -->
+      <button type="button" id="open-teacher-portal-btn" class="focus-ring rounded-full border border-[#ee824b]/40 bg-[#fff1e9] px-3 py-1.5 text-xs font-bold text-[#ee824b] hover:bg-[#ee824b] hover:text-white transition flex items-center gap-1.5 shadow-sm" title="Portal Kontrol & Monitoring Guru">
+       <i data-lucide="shield-check" class="h-3.5 w-3.5"></i>
+       <span class="hidden sm:inline">Portal Guru</span>
+      </button>
+
+      <div class="flex rounded-full border border-[#d8d3c4] bg-[#fffdf7] p-1 text-xs md:text-sm" role="tablist">
+       <button id="materi-tab" type="button" class="nav-tab focus-ring active rounded-full px-3.5 py-1.5 md:px-4 md:py-2 font-bold" role="tab" aria-selected="true"><span data-template-id="materi-tab-label" class="canva-text"></span></button>
+       <button id="kuis-tab" type="button" class="nav-tab focus-ring rounded-full px-3.5 py-1.5 md:px-4 md:py-2 font-bold text-[#174d3a]" role="tab" aria-selected="false"><span data-template-id="kuis-tab-label" class="canva-text"></span></button>
+      </div>
+     </div>
+    </nav>
+   </header>
+
+   <!-- SUB-MODULE SWITCHER BAR (WITH LOCK STATE) -->
+   <div class="border-b border-[#d8d3c4] bg-[#eae5d9] px-4 py-2 md:px-8 md:py-2.5">
+    <div class="mx-auto flex w-full max-w-6xl items-center gap-2 overflow-x-auto py-1 scrollbar-none" id="submodule-nav-bar" role="tablist">
+     <button class="sub-tab focus-ring active rounded-xl px-3 py-1.5 md:px-3.5 md:py-2 text-xs font-bold transition shadow-sm shrink-0" data-submod="1A" role="tab">
+      <span>1A. Hakikat &amp; Cara Berpikir</span>
+     </button>
+     <button class="sub-tab focus-ring locked rounded-xl px-3 py-1.5 md:px-3.5 md:py-2 text-xs font-bold transition shadow-sm shrink-0" data-submod="1B" role="tab">
+      <i data-lucide="lock" class="h-3.5 w-3.5 lock-icon"></i> <span>1B. Sejarah Kelahiran</span>
+     </button>
+     <button class="sub-tab focus-ring locked rounded-xl px-3 py-1.5 md:px-3.5 md:py-2 text-xs font-bold transition shadow-sm shrink-0" data-submod="1C" role="tab">
+      <i data-lucide="lock" class="h-3.5 w-3.5 lock-icon"></i> <span>1C. Tokoh &amp; Multiperspektif</span>
+     </button>
+     <button class="sub-tab focus-ring locked rounded-xl px-3 py-1.5 md:px-3.5 md:py-2 text-xs font-bold transition shadow-sm shrink-0" data-submod="1D" role="tab">
+      <i data-lucide="lock" class="h-3.5 w-3.5 lock-icon"></i> <span>1D. Fungsi &amp; Relevansi</span>
+     </button>
+     <button class="sub-tab focus-ring locked rounded-xl px-3 py-1.5 md:px-3.5 md:py-2 text-xs font-bold transition shadow-sm shrink-0" data-submod="1E" role="tab">
+      <i data-lucide="lock" class="h-3.5 w-3.5 lock-icon"></i> <span>1E. Sosiologi Indonesia</span>
+     </button>
+     <button class="sub-tab focus-ring locked rounded-xl px-3 py-1.5 md:px-3.5 md:py-2 text-xs font-bold transition shadow-sm shrink-0" data-submod="1F" role="tab">
+      <i data-lucide="lock" class="h-3.5 w-3.5 lock-icon"></i> <span>1F. Praktik Inkuiri</span>
+     </button>
+    </div>
+   </div>
+
+   <main class="mx-auto w-full max-w-6xl px-4 py-4 md:px-8 md:py-7">
+    <!-- MATERI PAGE VIEW -->
+    <section id="materi-page" class="page-view active" aria-labelledby="hero-title">
+     <section class="relative overflow-hidden rounded-3xl bg-[#174d3a] shadow-xl">
+      <img data-template-id="hero-image" loading="lazy" class="canva-image absolute inset-0 h-full w-full object-cover" src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80" alt="Sosiologi Hero">
+      <div class="hero-overlay absolute inset-0"></div>
+      <div class="relative grid gap-5 px-5 py-8 md:grid-cols-[1fr_auto] md:items-end md:px-10 md:py-12">
+       <div class="max-w-3xl">
+        <p data-template-id="hero-kicker" class="canva-text text-xs md:text-sm font-bold tracking-[.16em] text-[#d8ee93]"></p>
+        <h1 id="hero-title" data-template-id="hero-title" class="canva-text display-font mt-2 text-[#fff] text-xl md:text-3xl font-bold leading-tight"></h1>
+        <p data-template-id="hero-description" class="canva-text mt-3 max-w-2xl text-xs md:text-base leading-relaxed text-[#edf5da]"></p>
+       </div>
+       <aside data-template-id="hero-note" class="canva-banner max-w-xs rounded-2xl border border-[#d8ee93]/40 bg-[#d8ee93]/15 p-4 text-[#f5f8df]"><i data-lucide="compass" class="mb-2 h-5 w-5"></i>
+        <p data-template-id="hero-note-title" class="canva-text text-xs font-bold tracking-[.13em]"></p>
+        <p data-template-id="hero-note-text" class="canva-text mt-1 text-xs md:text-sm font-semibold leading-relaxed"></p>
+       </aside>
+      </div>
+     </section>
+
+     <section data-template-id="overview-section" class="canva-section mt-4 md:mt-5 rounded-3xl border border-[#d8d3c4] bg-[#fffdf7] p-5 shadow-sm md:p-7">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#d8d3c4] pb-4">
+       <div>
+        <p data-template-id="overview-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+        <h2 data-template-id="overview-title" class="canva-text display-font mt-1 text-[#174d3a] text-lg md:text-xl font-bold"></h2>
+       </div><span class="rounded-full bg-[#174d3a]/10 px-3 py-1 text-xs font-semibold text-[#174d3a]">Fase E / Kelas 10</span>
+      </div>
+      <p data-template-id="overview-text" class="canva-text mt-4 text-xs md:text-sm leading-relaxed text-[#405047]"></p>
+      <div class="mt-5 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
+       <article class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+        <p data-template-id="map-card-one-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+        <p data-template-id="map-card-one-text" class="canva-text mt-1.5 text-xs text-[#405047]"></p>
+       </article>
+       <article class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+        <p data-template-id="map-card-two-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+        <p data-template-id="map-card-two-text" class="canva-text mt-1.5 text-xs text-[#405047]"></p>
+       </article>
+       <article class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+        <p data-template-id="map-card-three-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+        <p data-template-id="map-card-three-text" class="canva-text mt-1.5 text-xs text-[#405047]"></p>
+       </article>
+       <article class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+        <p data-template-id="map-card-four-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+        <p data-template-id="map-card-four-text" class="canva-text mt-1.5 text-xs text-[#405047]"></p>
+       </article>
+      </div>
+     </section>
+
+     <section data-template-id="lessons-container" class="canva-section mt-5 grid gap-5">
+      <!-- JEJAK 01 -->
+      <article data-template-id="lesson-card-one" class="lesson-card rounded-3xl p-5 md:p-8">
+       <p data-template-id="lesson-one-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+       <h3 data-template-id="lesson-one-title" class="canva-text display-font mt-1.5 text-[#174d3a] text-lg md:text-2xl font-bold"></h3>
+       <p data-template-id="lesson-one-text" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+       <p data-template-id="lesson-one-text-two" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+       <div class="mt-4 grid gap-3 md:grid-cols-2">
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="lesson-one-point-a-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="lesson-one-point-a-text" class="canva-text mt-1 text-xs"></p>
+        </div>
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="lesson-one-point-b-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="lesson-one-point-b-text" class="canva-text mt-1 text-xs"></p>
+        </div>
+       </div>
+      </article>
+
+      <!-- JEJAK 02 -->
+      <article data-template-id="lesson-card-two" class="lesson-card rounded-3xl p-5 md:p-8">
+       <p data-template-id="lesson-two-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+       <h3 data-template-id="lesson-two-title" class="canva-text display-font mt-1.5 text-[#174d3a] text-lg md:text-2xl font-bold"></h3>
+       <p data-template-id="lesson-two-text" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+       <ul class="mt-3 grid gap-2.5 text-xs md:text-sm">
+        <li data-template-id="lesson-two-list-a" class="canva-text rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] p-3"></li>
+        <li data-template-id="lesson-two-list-b" class="canva-text rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] p-3"></li>
+        <li data-template-id="lesson-two-list-c" class="canva-text rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] p-3"></li>
+        <li data-template-id="lesson-two-list-d" class="canva-text rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] p-3"></li>
+       </ul>
+       <p data-template-id="lesson-two-text-two" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+      </article>
+
+      <!-- JEJAK 03 -->
+      <article data-template-id="lesson-card-three" class="lesson-card rounded-3xl p-5 md:p-8">
+       <p data-template-id="lesson-three-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+       <h3 data-template-id="lesson-three-title" class="canva-text display-font mt-1.5 text-[#174d3a] text-lg md:text-2xl font-bold"></h3>
+       <p data-template-id="lesson-three-text" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+       <div class="mt-4 grid gap-3.5 sm:grid-cols-2">
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="thinker-comte-name" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="thinker-comte-text" class="canva-text mt-1 text-xs leading-relaxed"></p>
+        </div>
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="thinker-durkheim-name" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="thinker-durkheim-text" class="canva-text mt-1 text-xs leading-relaxed"></p>
+        </div>
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="thinker-marx-name" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="thinker-marx-text" class="canva-text mt-1 text-xs leading-relaxed"></p>
+        </div>
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="thinker-weber-name" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="thinker-weber-text" class="canva-text mt-1 text-xs leading-relaxed"></p>
+        </div>
+       </div>
+      </article>
+
+      <!-- JEJAK 04 -->
+      <article data-template-id="lesson-card-four" class="lesson-card rounded-3xl p-5 md:p-8">
+       <p data-template-id="lesson-four-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+       <h3 data-template-id="lesson-four-title" class="canva-text display-font mt-1.5 text-[#174d3a] text-lg md:text-2xl font-bold"></h3>
+       <p data-template-id="lesson-four-text" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+       <p data-template-id="lesson-four-text-two" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+       <div class="mt-4 grid gap-3.5 md:grid-cols-3">
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="method-a-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="method-a-text" class="canva-text mt-1 text-xs leading-relaxed"></p>
+        </div>
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="method-b-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="method-b-text" class="canva-text mt-1 text-xs leading-relaxed"></p>
+        </div>
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="method-c-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="method-c-text" class="canva-text mt-1 text-xs leading-relaxed"></p>
+        </div>
+       </div>
+      </article>
+
+      <!-- JEJAK 05 -->
+      <article data-template-id="lesson-card-five" class="lesson-card rounded-3xl p-5 md:p-8">
+       <p data-template-id="lesson-five-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+       <h3 data-template-id="lesson-five-title" class="canva-text display-font mt-1.5 text-[#174d3a] text-lg md:text-2xl font-bold"></h3>
+       <p data-template-id="lesson-five-text" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+       <div class="mt-4 grid gap-3.5 sm:grid-cols-2">
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="object-material-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="object-material-text" class="canva-text mt-1 text-xs leading-relaxed"></p>
+        </div>
+        <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4">
+         <p data-template-id="object-formal-title" class="canva-text text-xs md:text-sm font-bold text-[#174d3a]"></p>
+         <p data-template-id="object-formal-text" class="canva-text mt-1 text-xs leading-relaxed"></p>
+        </div>
+       </div>
+      </article>
+
+      <!-- JEJAK 06 -->
+      <article data-template-id="lesson-card-six" class="lesson-card rounded-3xl p-5 md:p-8">
+       <p data-template-id="lesson-six-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+       <h3 data-template-id="lesson-six-title" class="canva-text display-font mt-1.5 text-[#174d3a] text-lg md:text-2xl font-bold"></h3>
+       <p data-template-id="lesson-six-text" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+       <p data-template-id="lesson-six-text-two" class="canva-text mt-3 text-xs md:text-sm leading-relaxed"></p>
+       <blockquote class="mt-4 rounded-2xl border-l-4 border-[#ee824b] bg-[#fff1e9] p-4 italic text-xs md:text-sm font-semibold text-[#8b3d1a]">
+        <p data-template-id="lesson-six-quote" class="canva-text"></p>
+       </blockquote>
+      </article>
+     </section>
+
+     <section data-template-id="reflection-section" class="canva-section mt-5 rounded-3xl border border-[#d8d3c4] bg-[#174d3a] p-6 text-white shadow-md md:p-8">
+      <p data-template-id="reflection-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#d8ee93]"></p>
+      <h3 data-template-id="reflection-title" class="canva-text display-font mt-1 text-lg md:text-xl font-bold"></h3>
+      <p data-template-id="reflection-text" class="canva-text mt-2 text-xs md:text-sm leading-relaxed text-[#edf5da]"></p>
+     </section>
+
+     <section data-template-id="challenge-section" class="canva-section mt-5 rounded-3xl border border-[#d8d3c4] bg-[#fffdf7] p-6 shadow-sm md:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+       <div>
+        <p data-template-id="challenge-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+        <h3 data-template-id="challenge-title" class="canva-text display-font mt-1 text-[#174d3a] text-lg md:text-xl font-bold"></h3>
+        <p data-template-id="challenge-text" class="canva-text mt-1 text-xs md:text-sm text-[#405047] max-w-xl"></p>
+       </div>
+       <button id="start-quiz-button" data-template-id="start-quiz-button" type="button" class="canva-button focus-ring shrink-0 rounded-full bg-[#174d3a] px-6 py-3 text-xs md:text-sm font-bold text-[#d8ee93] shadow-md hover:bg-[#123d2e] transition text-center"></button>
+      </div>
+     </section>
+    </section>
+
+    <!-- KUIS PAGE VIEW -->
+    <section id="kuis-page" class="page-view unselectable" aria-labelledby="quiz-title">
+     <section data-template-id="quiz-header-section" class="canva-section rounded-3xl border border-[#d8d3c4] bg-[#fffdf7] p-5 shadow-sm md:p-7">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#d8d3c4] pb-4">
+       <div>
+        <p data-template-id="quiz-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+        <h1 id="quiz-title" data-template-id="quiz-title" class="canva-text display-font mt-1 text-[#174d3a] text-xl md:text-2xl font-bold"></h1>
+        <p data-template-id="quiz-description" class="canva-text mt-1 text-xs md:text-sm text-[#405047]"></p>
+       </div>
+       <div class="flex flex-wrap items-center gap-3">
+        <!-- COUNTDOWN TIMER BADGE -->
+        <div id="quiz-timer-badge" class="flex items-center gap-1.5 rounded-2xl border border-[#ee824b]/40 bg-[#fff1e9] px-3.5 py-2 text-xs font-bold text-[#ee824b]">
+         <i data-lucide="clock" class="h-4 w-4 text-[#ee824b]"></i>
+         <span>Sisa Waktu: <strong id="timer-display" class="font-mono text-sm">20:00</strong></span>
+        </div>
+
+        <div id="anti-cheat-badge" class="hidden rounded-full bg-[#a53e24]/15 px-3 py-1 text-xs font-bold text-[#a53e24]">
+         <i data-lucide="shield-alert" class="inline h-3.5 w-3.5 mr-1"></i>Peringatan Tab Switch: <span id="tab-switch-count">0</span>x
+        </div>
+        <div class="rounded-2xl border border-[#d8ee93] bg-[#d8ee93]/30 px-4 py-2 text-center">
+         <p data-template-id="score-label" class="canva-text text-[10px] font-bold tracking-wider text-[#174d3a]"></p>
+         <p id="score-display" class="display-font text-xl md:text-2xl font-bold text-[#174d3a]">0</p>
+        </div>
+       </div>
+      </div>
+
+      <!-- STEPPER NAVIGATION BAR -->
+      <div class="mt-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+       <div>
+        <div class="flex items-center justify-between text-xs font-bold text-[#174d3a] mb-1">
+         <span data-template-id="progress-label" class="canva-text"></span>
+         <span id="progress-display">0/15 Terjawab</span>
+        </div>
+        <div class="h-2 w-full md:w-64 rounded-full bg-[#e8efd9] overflow-hidden">
+         <div id="progress-fill" class="progress-fill h-full w-0 bg-[#174d3a]"></div>
+        </div>
+       </div>
+
+       <!-- NUMERIC STEPPER BUTTONS (1-15) -->
+       <div class="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none" id="question-nav-grid"></div>
+      </div>
+     </section>
+
+     <!-- QUIZ LIST CONTAINER (Single Card Active View) -->
+     <section id="quiz-list" class="mt-5 grid gap-4"></section>
+
+     <!-- STEPPER CONTROLS & SUBMIT BUTTON -->
+     <div class="mt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+       <button id="prev-q-btn" type="button" class="focus-ring flex-1 sm:flex-none rounded-xl border border-[#d8d3c4] bg-[#fffdf7] px-4 py-2.5 text-xs font-bold text-[#174d3a] hover:bg-[#e8efd9] disabled:opacity-40 transition">
+        ← Soal Sebelumnya
+       </button>
+       <button id="next-q-btn" type="button" class="focus-ring flex-1 sm:flex-none rounded-xl border border-[#d8d3c4] bg-[#fffdf7] px-4 py-2.5 text-xs font-bold text-[#174d3a] hover:bg-[#e8efd9] disabled:opacity-40 transition">
+        Soal Selanjutnya →
+       </button>
+      </div>
+      <button id="check-quiz-button" data-template-id="check-quiz-button" type="button" class="canva-button focus-ring w-full sm:w-auto rounded-full bg-[#174d3a] px-8 py-3.5 text-xs md:text-sm font-bold text-[#d8ee93] shadow-lg hover:bg-[#123d2e] transition text-center"></button>
+     </div>
+     <p id="feedback" class="mt-3 text-center text-xs md:text-sm font-semibold"></p>
+
+     <!-- RESULT PANEL -->
+     <section id="result-panel" class="canva-section mt-5 hidden rounded-3xl border border-[#d8d3c4] bg-[#fffdf7] p-5 shadow-md md:p-8">
+      <p data-template-id="result-kicker" class="canva-text text-xs font-bold tracking-[.15em] text-[#ee824b]"></p>
+      <h2 data-template-id="result-title" class="canva-text display-font mt-1.5 text-[#174d3a] text-lg md:text-xl font-bold"></h2>
+      <p id="result-score-message" class="mt-2 text-base md:text-lg font-bold text-[#174d3a]"></p>
+      <p id="result-level-message" class="mt-1 text-xs md:text-sm leading-relaxed text-[#405047]"></p>
+
+      <!-- UNLOCK NOTIFICATION BADGE -->
+      <div id="unlock-notification-card" class="mt-4 hidden rounded-2xl border border-[#4f8b5c] bg-[#dff3cf] p-4 text-[#174d3a]">
+       <p class="font-bold flex items-center gap-1.5 text-sm"><i data-lucide="unlock" class="h-4 w-4 text-[#2d7354]"></i> MODUL BARU TERBUKA!</p>
+       <p id="unlock-notification-text" class="text-xs mt-1 leading-relaxed">Selamat! Nilai Anda memenuhi KKM. Modul berikutnya sekarang sudah dapat diakses.</p>
+      </div>
+
+      <div class="mt-4 flex flex-wrap gap-3">
+       <button id="retry-quiz-button" data-template-id="retry-quiz-button" type="button" class="canva-button focus-ring w-full sm:w-auto rounded-full bg-[#ee824b] px-6 py-2.5 text-xs md:text-sm font-bold text-white shadow-sm hover:bg-[#d96d36] transition text-center"></button>
+       <button id="continue-next-mod-button" type="button" class="hidden focus-ring w-full sm:w-auto rounded-full bg-[#174d3a] px-6 py-2.5 text-xs md:text-sm font-bold text-[#d8ee93] shadow-sm hover:bg-[#123d2e] transition text-center flex items-center gap-1.5">
+        <span>Lanjut ke Sub-Modul Berikutnya</span> <i data-lucide="arrow-right" class="h-4 w-4"></i>
+       </button>
+       <!-- BUTTON CLAIM SERTIFIKAT -->
+       <button id="claim-certificate-btn" type="button" class="hidden focus-ring w-full sm:w-auto rounded-full bg-[#ee824b] px-6 py-2.5 text-xs md:text-sm font-bold text-white shadow-lg hover:bg-[#d96d36] transition text-center flex items-center gap-1.5 animate-pulse">
+        <i data-lucide="award" class="h-4 w-4"></i> <span>Unduh Sertifikat Digital Kelulusan</span>
+       </button>
+      </div>
+     </section>
+    </section>
+   </main>
+
+   <footer class="mt-8 md:mt-10 border-t border-[#d8d3c4] bg-[#f6f3e9] py-5 px-4 text-center text-[11px] md:text-xs font-semibold text-[#405047]">
+    <p data-template-id="footer-text" class="canva-text"></p>
+   </footer>
+  </div>
+
+  <!-- MODAL SERTIFIKAT DIGITAL KELULUSAN -->
+  <div id="certificate-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/75 p-4 backdrop-blur-md overflow-y-auto">
+   <div class="w-full max-w-3xl rounded-3xl border-4 border-[#d8ee93] bg-[#fffdf7] p-6 shadow-2xl md:p-10 text-center relative animate-reveal">
+    <button type="button" id="close-cert-btn" class="absolute top-4 right-4 rounded-full p-2 text-[#174d3a] hover:bg-[#e8efd9] print:hidden">
+     <i data-lucide="x" class="h-6 w-6"></i>
+    </button>
+    
+    <!-- FRAME KERTAS SERTIFIKAT MURNI -->
+    <div class="border-2 border-[#174d3a] p-6 md:p-10 rounded-2xl bg-gradient-to-b from-[#fffdf7] via-[#f9f7ef] to-[#fffdf7] relative shadow-inner">
+     <div class="flex items-center justify-between border-b-2 border-[#174d3a]/20 pb-4 mb-6">
+      <div class="flex items-center gap-3">
+       <!-- SVG LOGO PERSIS SOSIOLOGI.EU.ORG -->
+       <svg viewBox="0 0 450 90" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-12 md:h-14 w-auto">
+        <rect width="80" height="80" rx="20" fill="#0b1a30"/>
+        <path d="M 60 20 C 15 20, 15 42, 40 42 C 65 42, 65 64, 20 64" stroke="#4a86e8" stroke-width="9" stroke-linecap="round"/>
+        <circle cx="60" cy="20" r="8.5" fill="#e58e00"/>
+        <circle cx="28" cy="27" r="3.5" fill="#a6c8ff"/>
+        <circle cx="20" cy="64" r="8.5" fill="#e58e00"/>
+        <circle cx="52" cy="57" r="3.5" fill="#a6c8ff"/>
+        <text x="98" y="48" font-family="'Fraunces', 'DM Serif Display', Georgia, serif" font-weight="800" font-size="34" fill="#0b1a30">Sosiologi<tspan fill="#e58e00">.eu.org</tspan></text>
+        <text x="99" y="70" font-family="'DM Sans', system-ui, sans-serif" font-weight="500" font-size="14" fill="#64748b">Learning Society, Understanding Change</text>
+       </svg>
+      </div>
+      <span class="rounded-full bg-[#174d3a]/10 px-3.5 py-1 text-[11px] font-extrabold text-[#174d3a] uppercase tracking-wider">OFFICIAL CERTIFICATE</span>
+     </div>
+
+     <p class="text-xs font-bold tracking-[.25em] text-[#e58e00] uppercase">SERTIFIKAT KELULUSAN MODUL</p>
+     <h1 class="display-font text-2xl md:text-4xl font-bold text-[#174d3a] mt-2">PENGANTAR SOSIOLOGI</h1>
+     <p class="text-xs text-[#405047] mt-1 italic">Nomor Verifikasi: CERT-SOSIO/FASE-E/<span id="cert-id-number">2026-001</span></p>
+
+     <div class="my-6">
+      <p class="text-xs text-[#405047] uppercase tracking-wider">Diberikan Kepada Siswa Terbaik:</p>
+      <h2 id="cert-student-name" class="display-font text-xl md:text-3xl font-bold text-[#e58e00] mt-1 underline decoration-[#d8ee93] decoration-4">AHMAD FAUZI</h2>
+      <p id="cert-student-class" class="text-xs font-bold text-[#174d3a] mt-1">Kelas: X-1</p>
+     </div>
+
+     <p class="text-xs md:text-sm text-[#405047] max-w-xl mx-auto leading-relaxed">
+      Telah berhasil menuntaskan seluruh <strong>6 Sub-Modul Pembelajaran Pengantar Sosiologi</strong> (Hakikat, Sejarah, Tokoh, Fungsi, Sosiologi Indonesia, &amp; Praktik Inkuiri) serta dinyatakan <strong>LULUS KETUNTASAN MINIMAL (KKM)</strong> dengan predikat Sangat Baik.
+     </p>
+
+     <div class="mt-8 flex items-end justify-between border-t border-[#d8d3c4] pt-6 text-left">
+      <div>
+       <p class="text-[10px] text-[#718277]">Tanggal Diterbitkan:</p>
+       <p id="cert-issue-date" class="text-xs font-bold text-[#174d3a]">24 Agustus 2026</p>
+       <p class="text-[10px] text-[#718277] mt-1">Status Verifikasi: <strong class="text-[#4f8b5c]">TERVERIFIKASI SISTEM</strong></p>
+      </div>
+
+      <!-- OFFICIAL STAMP LOGO -->
+      <div class="text-center">
+       <div class="w-14 h-14 mx-auto mb-1 flex items-center justify-center shadow-md rounded-2xl overflow-hidden bg-[#0b1a30]">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-14 w-14">
+         <rect width="100" height="100" rx="24" fill="#0b1a30"/>
+         <path d="M 75 25 C 20 25, 20 50, 50 50 C 80 50, 80 75, 25 75" stroke="#4a86e8" stroke-width="10" stroke-linecap="round"/>
+         <circle cx="75" cy="25" r="10" fill="#e58e00"/>
+         <circle cx="35" cy="33" r="4.5" fill="#a6c8ff"/>
+         <circle cx="65" cy="67" r="4.5" fill="#a6c8ff"/>
+         <circle cx="25" cy="75" r="10" fill="#e58e00"/>
+        </svg>
+       </div>
+       <p class="text-[11px] font-bold text-[#0b1a30] tracking-tight">sosiologi.eu.org</p>
+      </div>
+     </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="mt-6 flex items-center justify-center gap-3 print:hidden">
+     <button type="button" id="print-cert-btn" class="canva-button focus-ring rounded-full bg-[#174d3a] px-8 py-3 text-xs md:text-sm font-bold text-[#d8ee93] shadow-lg hover:bg-[#123d2e] transition flex items-center gap-2">
+      <i data-lucide="printer" class="h-4 w-4"></i> <span>Cetak / Simpan PDF Sertifikat</span>
+     </button>
+    </div>
+   </div>
+  </div>
+
+  <!-- MODAL REGISTRASI SISWA (GATEKEEPER FORM) -->
+  <div id="student-auth-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+   <div class="w-full max-w-md rounded-3xl border border-[#d8d3c4] bg-[#fffdf7] p-6 shadow-2xl md:p-8 animate-reveal">
+    <div class="flex items-center gap-3 border-b border-[#d8d3c4] pb-4">
+     <div class="grid h-10 w-10 place-items-center rounded-2xl bg-[#174d3a] text-[#d8ee93]">
+      <i data-lucide="shield-check" class="h-5 w-5"></i>
+     </div>
+     <div>
+      <h2 class="display-font text-base md:text-lg font-bold text-[#174d3a]">Konfirmasi Sesi Siswa</h2>
+      <p class="text-xs text-[#405047]">Masukkan data diri &amp; token kelas untuk memulai</p>
+     </div>
+    </div>
+
+    <form id="student-auth-form" class="mt-5 space-y-4">
+     <div>
+      <label class="block text-xs font-bold text-[#174d3a] mb-1">Nama Lengkap Siswa</label>
+      <input type="text" id="input-student-nama" required placeholder="Contoh: Ahmad Fauzi" class="w-full rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] px-3.5 py-2.5 text-xs font-semibold text-[#17211d] focus-ring focus:bg-white">
+     </div>
+
+     <div>
+      <label class="block text-xs font-bold text-[#174d3a] mb-1">Alamat Email (Unik Per Siswa)</label>
+      <input type="email" id="input-student-email" required placeholder="siswa@sekolah.sch.id" class="w-full rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] px-3.5 py-2.5 text-xs font-semibold text-[#17211d] focus-ring focus:bg-white">
+      <p class="text-[10px] text-[#718277] mt-1">*1 Email berlaku untuk 1 sesi pengerjaan siswa.</p>
+     </div>
+
+     <div class="grid grid-cols-2 gap-3">
+      <div>
+       <label class="block text-xs font-bold text-[#174d3a] mb-1">Kelas</label>
+       <select id="input-student-kelas" required class="w-full rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] px-3.5 py-2.5 text-xs font-semibold text-[#17211d] focus-ring focus:bg-white">
+        <option value="X-1">X-1</option>
+        <option value="X-2">X-2</option>
+        <option value="X-3">X-3</option>
+        <option value="X-4">X-4</option>
+        <option value="X-5">X-5</option>
+        <option value="X-6">X-6</option>
+       </select>
+      </div>
+
+      <div>
+       <label class="block text-xs font-bold text-[#174d3a] mb-1">Token Akses Kelas</label>
+       <input type="text" id="input-student-token" required placeholder="SOSIO10" value="SOSIO10" class="w-full rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] px-3.5 py-2.5 text-xs font-bold uppercase text-[#174d3a] focus-ring focus:bg-white">
+      </div>
+     </div>
+
+     <p id="auth-error-msg" class="hidden text-xs font-bold text-[#a53e24] bg-[#a53e24]/10 p-2.5 rounded-xl text-center"></p>
+
+     <button type="submit" id="auth-submit-btn" class="canva-button focus-ring w-full rounded-full bg-[#174d3a] py-3 text-xs md:text-sm font-bold text-[#d8ee93] shadow-md hover:bg-[#123d2e] transition flex items-center justify-center gap-2">
+      <span>Masuk ke Modul Pembelajaran</span>
+      <i data-lucide="arrow-right" class="h-4 w-4"></i>
+     </button>
+    </form>
+   </div>
+  </div>
+
+  <!-- MODAL DASHBOARD GURU (TEACHER CONTROL & MONITORING PORTAL) -->
+  <div id="teacher-admin-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/75 p-4 backdrop-blur-md overflow-y-auto">
+   <div class="w-full max-w-3xl rounded-3xl border-2 border-[#d8ee93] bg-[#fffdf7] p-6 shadow-2xl md:p-8 animate-reveal my-8">
+    <!-- MODAL HEADER -->
+    <div class="flex items-center justify-between border-b border-[#d8d3c4] pb-4">
+     <div class="flex items-center gap-3">
+      <div class="grid h-10 w-10 place-items-center rounded-2xl bg-[#174d3a] text-[#d8ee93]">
+       <i data-lucide="shield-check" class="h-6 w-6"></i>
+      </div>
+      <div>
+       <h2 class="display-font text-base md:text-xl font-bold text-[#174d3a]">Portal Kontrol &amp; Monitoring Guru</h2>
+       <p class="text-xs text-[#405047]">Pantau aktivitas pengerjaan siswa &amp; kelola akses kelas secara real-time</p>
+      </div>
+     </div>
+     <button type="button" id="close-teacher-modal-btn" class="rounded-full p-2 text-[#405047] hover:bg-[#e8efd9]">
+      <i data-lucide="x" class="h-5 w-5"></i>
+     </button>
+    </div>
+
+    <!-- TEACHER PORTAL NAVIGATION TABS -->
+    <div class="mt-4 flex border-b border-[#d8d3c4] gap-2">
+     <button type="button" id="teacher-tab-monitoring" class="px-4 py-2 text-xs md:text-sm font-bold border-b-2 border-[#174d3a] text-[#174d3a] flex items-center gap-1.5">
+      <i data-lucide="activity" class="h-4 w-4 text-[#ee824b]"></i>
+      <span>1. Monitoring Pengerjaan Siswa</span>
+     </button>
+     <button type="button" id="teacher-tab-settings" class="px-4 py-2 text-xs md:text-sm font-bold border-b-2 border-transparent text-[#405047] hover:text-[#174d3a] flex items-center gap-1.5">
+      <i data-lucide="sliders" class="h-4 w-4"></i>
+      <span>2. Remote Control &amp; Akses Kelas</span>
+     </button>
+    </div>
+
+    <!-- VIEW 1: MONITORING PANEL -->
+    <div id="teacher-view-monitoring" class="mt-5 space-y-4">
+     <!-- MONITORING SUMMARY CARDS -->
+     <div class="grid grid-cols-3 gap-3">
+      <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-3 text-center">
+       <p class="text-[10px] font-bold text-[#405047] uppercase">Total Pengerjaan</p>
+       <p id="stat-total-submissions" class="display-font text-xl md:text-2xl font-bold text-[#174d3a]">0</p>
+      </div>
+      <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-3 text-center">
+       <p class="text-[10px] font-bold text-[#405047] uppercase">Rata-Rata Nilai</p>
+       <p id="stat-avg-score" class="display-font text-xl md:text-2xl font-bold text-[#ee824b]">0%</p>
+      </div>
+      <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-3 text-center">
+       <p class="text-[10px] font-bold text-[#405047] uppercase">Alert Pindah Tab</p>
+       <p id="stat-total-tabswitches" class="display-font text-xl md:text-2xl font-bold text-[#a53e24]">0x</p>
+      </div>
+     </div>
+
+     <!-- MONITORING TABLE -->
+     <div class="rounded-2xl border border-[#d8d3c4] bg-[#fffdf7] overflow-hidden shadow-inner">
+      <div class="max-h-60 overflow-y-auto">
+       <table class="w-full text-left text-xs">
+        <thead class="bg-[#174d3a] text-[#d8ee93] text-[10px] uppercase font-bold sticky top-0">
+         <tr>
+          <th class="p-2.5">Waktu</th>
+          <th class="p-2.5">Nama Siswa</th>
+          <th class="p-2.5">Kelas</th>
+          <th class="p-2.5">Modul</th>
+          <th class="p-2.5">Skor (%)</th>
+          <th class="p-2.5">Status</th>
+          <th class="p-2.5">Alert Tab</th>
+         </tr>
+        </thead>
+        <tbody id="monitoring-table-body" class="divide-y divide-[#d8d3c4]">
+         <tr>
+          <td colspan="7" class="p-4 text-center text-[#718277] italic">Belum ada pengerjaan kuis siswa yang terekam.</td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+
+     <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+      <button type="button" id="export-monitoring-csv-btn" class="canva-button focus-ring rounded-full bg-[#174d3a] px-4 py-2 text-xs font-bold text-[#d8ee93] hover:bg-[#123d2e] transition flex items-center gap-1.5">
+       <i data-lucide="download" class="h-3.5 w-3.5"></i>
+       <span>Ekspor Rekapitulasi CSV</span>
+      </button>
+      <button type="button" id="clear-monitoring-log-btn" class="text-xs font-bold text-[#a53e24] underline hover:text-[#d96d36]">
+       Bersihkan Log Pengerjaan
+      </button>
+     </div>
+    </div>
+
+    <!-- VIEW 2: REMOTE CONTROL & SETTINGS -->
+    <div id="teacher-view-settings" class="mt-5 hidden space-y-4">
+     <form id="teacher-admin-form" class="space-y-4">
+      <div>
+       <label class="block text-xs font-bold text-[#174d3a] mb-1">PIN / Password Master Guru</label>
+       <input type="password" id="input-teacher-pin" required placeholder="Masukkan PIN Guru" value="SOSIO10" class="w-full rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] px-3.5 py-2.5 text-xs font-semibold text-[#17211d]">
+      </div>
+
+      <div class="grid grid-cols-3 gap-3">
+       <div>
+        <label class="block text-xs font-bold text-[#174d3a] mb-1">KKM (%)</label>
+        <input type="number" id="input-teacher-kkm" value="80" min="50" max="100" class="w-full rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] px-3.5 py-2.5 text-xs font-bold text-[#174d3a]">
+       </div>
+
+       <div>
+        <label class="block text-xs font-bold text-[#174d3a] mb-1">Timer Kuis (Menit)</label>
+        <input type="number" id="input-teacher-timer" value="20" min="1" max="120" class="w-full rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] px-3.5 py-2.5 text-xs font-bold text-[#174d3a]">
+       </div>
+
+       <div>
+        <label class="block text-xs font-bold text-[#174d3a] mb-1">Token Kelas</label>
+        <input type="text" id="input-teacher-new-token" value="SOSIO10" class="w-full rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] px-3.5 py-2.5 text-xs font-bold uppercase text-[#174d3a]">
+       </div>
+      </div>
+
+      <div>
+       <label class="block text-xs font-bold text-[#174d3a] mb-1">URL Web App Google Apps Script (GAS Backend)</label>
+       <input type="url" id="input-teacher-gas-url" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full rounded-xl border border-[#d8d3c4] bg-[#f6f3e9] px-3.5 py-2.5 text-xs font-semibold text-[#17211d]">
+       <p class="text-[10px] text-[#718277] mt-1">*Kosongkan jika ingin berjalan dalam mode offline lokal.</p>
+      </div>
+
+      <div class="rounded-2xl border border-[#d8d3c4] bg-[#f6f3e9] p-4 space-y-2">
+       <label class="flex items-center gap-2.5 text-xs font-bold text-[#174d3a] cursor-pointer">
+        <input type="checkbox" id="check-unlock-all" class="h-4 w-4 rounded accent-[#174d3a]">
+        <span>Buka Semua Sub-Modul ( Mode Demonstrasi Kelas )</span>
+       </label>
+      </div>
+
+      <p id="teacher-msg" class="hidden text-xs font-bold p-2.5 rounded-xl text-center"></p>
+
+      <div class="flex items-center gap-3">
+       <button type="submit" class="canva-button focus-ring flex-1 rounded-full bg-[#174d3a] py-3 text-xs md:text-sm font-bold text-[#d8ee93] shadow-md hover:bg-[#123d2e] transition">
+        Simpan Pengaturan
+       </button>
+      </div>
+     </form>
+    </div>
+   </div>
+  </div>
+
+  <!-- UNIVERSAL E-MODULE ARCHITECTURE SCRIPTS -->
+  <script src="modulesData.js"></script>
+  <script src="app.js"></script>
+ </body>
+</html>
