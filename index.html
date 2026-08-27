@@ -813,11 +813,13 @@
     // Render Teacher Monitoring Dashboard
     function renderTeacherMonitoringData() {
       let logs = [];
+      let regStudents = [];
       try {
         logs = JSON.parse(localStorage.getItem('sosio_monitoring_logs') || '[]');
+        regStudents = JSON.parse(localStorage.getItem('sosio_registered_students') || '[]');
       } catch(e) {}
 
-      document.getElementById('t-stat-total').textContent = logs.length;
+      document.getElementById('t-stat-total').textContent = logs.length > 0 ? logs.length : regStudents.length;
       if (logs.length > 0) {
         const avg = Math.round(logs.reduce((acc, item) => acc + item.pct, 0) / logs.length);
         document.getElementById('t-stat-avg').textContent = `${avg}%`;
@@ -830,8 +832,21 @@
 
       const tbody = document.getElementById('t-monitoring-tbody');
       if (tbody) {
-        if (logs.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400 italic">Belum ada pengerjaan kuis siswa yang terekam.</td></tr>`;
+        if (logs.length === 0 && regStudents.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400 italic">Belum ada pengerjaan kuis atau pendaftaran siswa yang terekam.</td></tr>`;
+        } else if (logs.length === 0 && regStudents.length > 0) {
+          tbody.innerHTML = regStudents.map(item => `
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 text-slate-500 whitespace-nowrap">${item.timestamp}</td>
+              <td class="p-3 font-bold text-slate-900">${escapeHtml(item.nama)}</td>
+              <td class="p-3 text-slate-700">${escapeHtml(item.kelas)}</td>
+              <td class="p-3 text-slate-500">${escapeHtml(item.email)}</td>
+              <td class="p-3 font-bold text-slate-500">Baru Daftar / Login</td>
+              <td class="p-3 font-medium text-slate-400">Belum Kuis</td>
+              <td class="p-3"><span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-600 border border-slate-200">TERDAFTAR</span></td>
+              <td class="p-3"><span class="text-slate-400 text-[10px]">Bersih</span></td>
+            </tr>
+          `).join('');
         } else {
           tbody.innerHTML = logs.map(item => `
             <tr class="hover:bg-slate-50">
