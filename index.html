@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pengantar Sosiologi X — Platform Pembelajaran Digital & Inkuiri Sosial Fase E</title>
-  <meta name="description" content="Halaman Utama Minimalis & Timeless Pengantar Sosiologi X Fase E (Kelas 10). Dilengkapi Mode Siswa dan Mode Guru (Sandi:).">
+  <meta name="description" content="Halaman Utama Minimalis & Timeless Pengantar Sosiologi X Fase E (Kelas 10). Dilengkapi Mode Siswa dan Mode Guru (Sandi: cornelcktc).">
   <!-- Tailwind CSS 3 -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <!-- Lucide Icons -->
@@ -708,6 +708,23 @@
       // Save to localStorage for app.js integration
       localStorage.setItem('activeStudent', JSON.stringify(currentStudent));
 
+      // Post registration data immediately to Google Sheets if GAS URL is configured
+      const gasUrl = localStorage.getItem("sosio_gas_url") || "";
+      if (gasUrl) {
+        fetch(gasUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "VERIFY_STUDENT",
+            email: currentStudent.email,
+            nama: currentStudent.nama,
+            kelas: currentStudent.kelas,
+            token: currentStudent.token
+          })
+        }).catch(err => console.error("GAS Registration Sync Error:", err));
+      }
+
       if (errEl) errEl.classList.add('hidden');
       enableEnterModuleButton();
       
@@ -874,8 +891,13 @@
       e.preventDefault();
       const kkm = parseInt(document.getElementById('t-set-kkm').value || "80", 10);
       const timer = parseInt(document.getElementById('t-set-timer').value || "20", 10);
+      const gasUrl = document.getElementById('t-set-gas-url') ? document.getElementById('t-set-gas-url').value.trim() : "";
       const unlockAll = document.getElementById('t-set-unlockall').checked;
       const msg = document.getElementById('t-save-msg');
+
+      if (gasUrl) {
+        localStorage.setItem('sosio_gas_url', gasUrl);
+      }
 
       if (unlockAll) {
         localStorage.setItem('unlockedModules', JSON.stringify(["1A", "1B", "1C", "1D", "1E", "1F"]));
