@@ -709,7 +709,8 @@
       localStorage.setItem('activeStudent', JSON.stringify(currentStudent));
 
       // Post registration data immediately to Google Sheets if GAS URL is configured
-      const gasUrl = localStorage.getItem("sosio_gas_url") || "";
+      const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbyS7te688aCdoq81DbJkS0bkkFZL0TlUcRZdmnbeBjmlwi1JMcYgS99lw9aQdTdcj_W/exec";
+      const gasUrl = localStorage.getItem("sosio_gas_url") || DEFAULT_GAS_URL;
       if (gasUrl) {
         fetch(gasUrl, {
           method: "POST",
