@@ -7,7 +7,7 @@
 // =========================================================================
 // CONFIGURATION: Tempelkan URL Web App Google Apps Script Anda di bawah ini
 // =========================================================================
-let GAS_API_URL = ""; // Contoh: "https://script.google.com/macros/s/AKfycbx.../exec"
+let GAS_API_URL = localStorage.getItem("sosio_gas_url") || ""; // Persisted GAS Web App URL
 
 // Global State
 let currentSubModule = "1A";
@@ -565,8 +565,23 @@ function handleStudentLogin(nama, email, kelas, token) {
 
   if (studentAuthModal) studentAuthModal.classList.add("hidden");
 
-  // Verify token or fetch unlocked modules from GAS
+  // Record student registration/session immediately to Google Sheets (Tab Siswa)
   if (GAS_API_URL) {
+    // 1. Post to ensure instant sheet append/update
+    fetch(GAS_API_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "VERIFY_STUDENT",
+        email: email,
+        nama: nama,
+        kelas: kelas,
+        token: token
+      })
+    }).catch(err => console.error("GAS Reg Sync Error:", err));
+
+    // 2. Fetch unlocked modules
     fetch(`${GAS_API_URL}?action=VERIFY_STUDENT&email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}&nama=${encodeURIComponent(nama)}&kelas=${encodeURIComponent(kelas)}`)
       .then(res => res.json())
       .then(data => {
