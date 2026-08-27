@@ -7,7 +7,7 @@
 // =========================================================================
 // CONFIGURATION: Tempelkan URL Web App Google Apps Script Anda di bawah ini
 // =========================================================================
-let GAS_API_URL = localStorage.getItem("sosio_gas_url") || ""; // Persisted GAS Web App URL
+let GAS_API_URL = localStorage.getItem("sosio_gas_url") || "https://script.google.com/macros/s/AKfycbyS7te688aCdoq81DbJkS0bkkFZL0TlUcRZdmnbeBjmlwi1JMcYgS99lw9aQdTdcj_W/exec"; // Persisted GAS Web App URL
 
 // Global State
 let currentSubModule = "1A";
@@ -910,7 +910,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       kkmThreshold = newKkm;
       quizTimerMinutes = newTimer;
-      if (newGasUrl) GAS_API_URL = newGasUrl;
+      if (newGasUrl) {
+        GAS_API_URL = newGasUrl;
+        localStorage.setItem("sosio_gas_url", newGasUrl);
+      }
       
       if (unlockAll) {
         unlockedModules = ["1A", "1B", "1C", "1D", "1E", "1F"];
