@@ -559,6 +559,24 @@ function handleStudentLogin(nama, email, kelas, token) {
   activeStudent = { nama, email, kelas, token };
   localStorage.setItem("activeStudent", JSON.stringify(activeStudent));
 
+  try {
+    const regLogs = JSON.parse(localStorage.getItem("sosio_registered_students") || "[]");
+    const existingIdx = regLogs.findIndex(s => s.email === email);
+    const regRecord = {
+      timestamp: new Date().toLocaleString("id-ID"),
+      nama: nama,
+      kelas: kelas,
+      email: email,
+      token: token
+    };
+    if (existingIdx !== -1) {
+      regLogs[existingIdx] = regRecord;
+    } else {
+      regLogs.unshift(regRecord);
+    }
+    localStorage.setItem("sosio_registered_students", JSON.stringify(regLogs));
+  } catch(err) {}
+
   if (activeStudentNameSpan) activeStudentNameSpan.textContent = `${nama} (${kelas})`;
   const badge = document.getElementById("student-session-badge");
   if (badge) badge.classList.remove("hidden");
@@ -704,13 +722,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  function openTeacherModal() {
+    renderMonitoringDashboard();
+    const gasInput = document.getElementById("input-teacher-gas-url");
+    const kkmInput = document.getElementById("input-teacher-kkm");
+    const timerInput = document.getElementById("input-teacher-timer");
+    if (gasInput) gasInput.value = GAS_API_URL;
+    if (kkmInput) kkmInput.value = kkmThreshold;
+    if (timerInput) timerInput.value = quizTimerMinutes;
+    if (teacherAdminModal) teacherAdminModal.classList.remove("hidden");
+  }
+
   // Open Explicit Teacher Portal Button
   const openTeacherPortalBtn = document.getElementById("open-teacher-portal-btn");
   if (openTeacherPortalBtn) {
-    openTeacherPortalBtn.addEventListener("click", () => {
-      renderMonitoringDashboard();
-      if (teacherAdminModal) teacherAdminModal.classList.remove("hidden");
-    });
+    openTeacherPortalBtn.addEventListener("click", openTeacherModal);
   }
 
   // Hidden Teacher Portal Trigger (5 Clicks on Header Logo)
@@ -720,8 +746,7 @@ document.addEventListener("DOMContentLoaded", () => {
       headerClickCounter++;
       if (headerClickCounter >= 5) {
         headerClickCounter = 0;
-        renderMonitoringDashboard();
-        if (teacherAdminModal) teacherAdminModal.classList.remove("hidden");
+        openTeacherModal();
       }
     });
   }
@@ -771,7 +796,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalTabswitchesEl = document.getElementById("stat-total-tabswitches");
     const tableBody = document.getElementById("monitoring-table-body");
 
-    if (totalSubmissionsEl) totalSubmissionsEl.textContent = logs.length;
+    let regStudents = [];
+    try {
+      regStudents = JSON.parse(localStorage.getItem("sosio_registered_students") || "[]");
+    } catch(e) {}
+
+    if (totalSubmissionsEl) totalSubmissionsEl.textContent = logs.length > 0 ? logs.length : regStudents.length;
     
     if (avgScoreEl) {
       if (logs.length > 0) {
@@ -788,8 +818,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (tableBody) {
-      if (logs.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-[#718277] italic">Belum ada pengerjaan kuis siswa yang terekam.</td></tr>`;
+      if (logs.length === 0 && regStudents.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-[#718277] italic">Belum ada aktivitas siswa yang terekam.</td></tr>`;
+      } else if (logs.length === 0 && regStudents.length > 0) {
+        tableBody.innerHTML = regStudents.map(item => `
+          <tr class="hover:bg-[#f6f3e9]/60">
+            <td class="p-2.5 font-medium text-[#405047] whitespace-nowrap">${item.timestamp}</td>
+            <td class="p-2.5 font-bold text-[#174d3a]">${escapeHtml(item.nama)}</td>
+            <td class="p-2.5 text-[#405047]">${escapeHtml(item.kelas)}</td>
+            <td class="p-2.5 font-bold text-[#718277]">Baru Daftar / Login</td>
+            <td class="p-2.5 font-medium text-[#718277]">Belum Kuis</td>
+            <td class="p-2.5 font-bold text-[#718277]"><span class="inline-block rounded-full bg-[#718277]/10 text-[#718277] px-2 py-0.5 text-[10px]">AKTIF</span></td>
+            <td class="p-2.5 font-bold text-[#718277]"><span class="text-[#718277] text-[10px]">Bersih</span></td>
+          </tr>
+        `).join("");
       } else {
         tableBody.innerHTML = logs.map(item => `
           <tr class="hover:bg-[#f6f3e9]/60">
